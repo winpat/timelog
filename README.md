@@ -3,11 +3,11 @@ A command-line time tracking tool written in Haskell
 
 ## Tracking time
 ```sh
-$ tl
+$ lt
 
 You clocked in at 8:04
 
-$ tl
+$ lt
 
 Your end of the day registered as 17:15
 
@@ -30,7 +30,7 @@ Your end of the day registered as 17:15
 A command-line time log written in Haskell
 
 ```sh
-$ tl note "Fixing some bugs, #13"
+$ lt note "Fixing some bugs, #13"
 
 Added description for current tracking periode
 ```
@@ -40,7 +40,7 @@ Added description for current tracking periode
 The report command will open an interactive GUI (built with  [brick](https://github.com/jtdaugherty/brick)) that will let you select log entries, modify and delete them. 
 
 ```sh
-$ tl report
+$ lt report
 
 ┌────────────────┬────────────────────────┬─────────────────────────────────────────┐ 
 │ 2019-04-08     │ 7 Hours and 30 Minutes │ WIP: Testing new implementation of...   │
