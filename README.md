@@ -1,4 +1,4 @@
-# λ-time
+# timelog
 A command-line time tracking tool written in Haskell
 
 ## Tracking time
