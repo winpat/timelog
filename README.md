@@ -1,5 +1,5 @@
-# timelog
-A command-line time log written in Haskell
+# λ-time
+A command-line time tracking tool written in Haskell
 
 ## Tracking time
 ```sh
@@ -32,7 +32,7 @@ A command-line time log written in Haskell
 ```sh
 $ tl note "Fixing some bugs, #13"
 
-Added description for current tracking preriode
+Added description for current tracking periode
 ```
 
 ## Generate a report
