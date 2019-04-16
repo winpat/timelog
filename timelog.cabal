@@ -1,0 +1,15 @@
+cabal-version:       2.4
+name:                timelog
+version:             0.1.0.0
+homepage:            https://github.com/winpat/timelog
+license:             MIT
+license-file:        LICENSE
+author:              Patrick Winter, Ralph Huwiler
+maintainer:          patrickwinter@posteo.ch
+extra-source-files:  CHANGELOG.md, README.md
+executable timelog
+  main-is:             Main.hs
+  build-depends:       base ^>=4.12.0.0
+                       , brick
+  hs-source-dirs:      src
+  default-language:    Haskell2010
