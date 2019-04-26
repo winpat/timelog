@@ -13,8 +13,6 @@ import Data.Char
 import Data.Time.Clock
 import Data.Time.Format
 
-# TODO: This file needs to be cleaned up.
-
 
 type Identifier = String
 type Declaration = (Identifier, String)
