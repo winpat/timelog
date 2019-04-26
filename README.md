@@ -63,3 +63,12 @@ $ lt report
 └──────────────────────────┘
 ```
 
+
+
+# Development Environment
+
+To make it easy to work on this project on any machine, without having to install the Haskell environment, we use a Docker image that has all required dependencies installed. You can start the container using the following command: 
+
+```
+docker-compose run haskell /bin/bash
+```

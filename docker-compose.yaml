@@ -1,0 +1,6 @@
+version: "3.4"
+services:
+  haskell:
+    image: haskell:8.6.3
+    volumes:
+      - ./:/app
