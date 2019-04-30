@@ -8,12 +8,16 @@ import Lens.Micro ((^.))
 import Control.Monad (void)
 import Data.Maybe (fromMaybe)
 import qualified Graphics.Vty as V
+import Data.Time.Clock
+       (UTCTime(..), NominalDiffTime, nominalDay, diffUTCTime)
+import Data.Time.Format (formatTime, defaultTimeLocale)
 
 import qualified Brick.Main as M
 import qualified Brick.Types as T
 import qualified Brick.Widgets.Border as B
 import qualified Brick.Widgets.List as L
 import qualified Brick.Widgets.Center as C
+import qualified Brick.Widgets.Core as Core
 import qualified Brick.AttrMap as A
 import qualified Data.Vector as Vec
 import Brick.Types
@@ -53,7 +57,15 @@ appEvent l (T.VtyEvent e) =
 appEvent l _ = M.continue l
 
 listDrawElement :: Bool -> LT.Entry -> Widget ()
-listDrawElement sel entry = C.hCenter $ str $ show ( LT.description entry)
+listDrawElement sel entry = Core.hBox
+    [ Core.padLeft (T.Pad 1) $ str $ formatDate ( LT.startTime entry)
+    , Core.padLeft (T.Pad 1) $ str ( LT.description entry)
+    ]
+
+formatDate :: UTCTime -> String
+formatDate date =
+  let format = "%d/%b"
+  in formatTime defaultTimeLocale format (utctDay date)
 
 initialState :: LT.Log -> L.List () LT.Entry
 initialState l = L.list () (Vec.fromList l) 1

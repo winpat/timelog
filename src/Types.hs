@@ -4,10 +4,13 @@ import Data.Time.Clock
 import Data.Time.Format
 
 data Entry = Entry {
-    startTime :: UTCTime
-  , endTime :: UTCTime
+    startTime :: Maybe UTCTime
+  , endTime :: Maybe UTCTime
   , description :: String 
 }  deriving (Eq, Read, Show)
 
 
 type Log = [Entry]
+
+
+renderDate 
