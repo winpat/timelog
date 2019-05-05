@@ -45,12 +45,18 @@ drawUI l = [ui]
               L.renderList listDrawElement True l
         ui = C.vCenter $ vBox [ C.hCenter box
                               , str " "
+                              , C.hCenter $ str "Press d to delete an entry. Press m to modify"
                               , C.hCenter $ str "Press Esc to exit."
                               ]
 
 appEvent :: L.List () LT.Entry -> T.BrickEvent () e -> T.EventM () (T.Next (L.List () LT.Entry))
 appEvent l (T.VtyEvent e) =
     case e of        
+        V.EvKey (V.KChar 'd') [] ->
+          case l^.(L.listSelectedL) of
+              Nothing -> M.continue l
+              Just i -> M.continue $ L.listRemove i l
+        
         V.EvKey V.KEsc [] -> M.halt l
 
         ev -> M.continue =<< L.handleListEvent ev l
@@ -85,5 +91,7 @@ theApp =
           , M.appAttrMap = const theMap
           }
 
-main :: LT.Log -> IO ()
-main log = void $ M.defaultMain theApp (initialState log)
+main :: LT.Log -> IO LT.Log
+main log = do
+  newData <- M.defaultMain theApp (initialState log)
+  return $ Vec.toList $ L.listElements newData

@@ -12,7 +12,9 @@ main = do
 
   d <- load
 
-  UI.main d
+  l <- UI.main d
+  
+  save l
 
 
 -- Generate some demo data to work with
