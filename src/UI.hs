@@ -58,14 +58,10 @@ appEvent l _ = M.continue l
 
 listDrawElement :: Bool -> LT.Entry -> Widget ()
 listDrawElement sel entry = Core.hBox
-    [ Core.padLeft (T.Pad 1) $ str $ formatDate ( LT.startTime entry)
-    , Core.padLeft (T.Pad 1) $ str ( LT.description entry)
+    [ Core.padLeft (T.Pad 1) $ str $ LT.renderDate ( LT.startTime entry)
+    , Core.padLeft (T.Pad 3) $ str $ LT.renderDateDiff ( LT.startTime entry) ( LT.endTime entry)
+    , Core.padLeft (T.Pad 3) $ str ( LT.description entry)
     ]
-
-formatDate :: UTCTime -> String
-formatDate date =
-  let format = "%d/%b"
-  in formatTime defaultTimeLocale format (utctDay date)
 
 initialState :: LT.Log -> L.List () LT.Entry
 initialState l = L.list () (Vec.fromList l) 1
