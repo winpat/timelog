@@ -3,18 +3,17 @@ module Main where
 import Data.Time.Clock
 
 import Types
-import qualified UI as UI(main)
 import Storage.Serialize
+import System.Environment (getArgs)
+import Cli (commandLine)
 
 main :: IO ()
 main = do
-  -- generateTestData
-
   d <- load
-
-  l <- UI.main d
-  
+  args <- getArgs
+  l <- commandLine args d
   save l
+
 
 
 -- Generate some demo data to work with
