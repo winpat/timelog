@@ -5,8 +5,10 @@ import Types
 filename = "labda-time.dat"
 
 load :: IO Log
-load = do 
+load = do
   contents <- readFile filename
+  -- https://ianthehenry.com/posts/lazy-io/
+  seq (length contents) (return ())
   return $ read contents
 
 
