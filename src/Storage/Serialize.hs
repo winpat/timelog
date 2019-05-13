@@ -1,12 +1,23 @@
 module Storage.Serialize (load, save) where
 
+import System.Environment (lookupEnv)
 import Types
 
 filename = "labda-time.dat"
 
+
+dataFile :: IO String
+dataFile = do
+  path <- lookupEnv "TIMELOG_DATA_FILE"
+  return $ case path of
+    Nothing -> filename
+    Just p -> p
+
+
 load :: IO Log
 load = do
-  contents <- readFile filename
+  f <- dataFile
+  contents <- readFile f
   -- https://ianthehenry.com/posts/lazy-io/
   seq (length contents) (return ())
   return $ read contents
@@ -14,4 +25,5 @@ load = do
 
 save :: Log -> IO ()
 save ls = do
-  writeFile filename $ show ls
+  f <- dataFile
+  writeFile f $ show ls
