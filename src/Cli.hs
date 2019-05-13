@@ -20,7 +20,13 @@ handleArgument a l
              | a == "ui"    = UI.main l
              | a == "start" = clockIn l
              | a == "stop"  = clockOut l
+             | a == "list"  = printLog l
              | otherwise    = undefined
+
+printLog :: Log -> IO Log
+printLog l = do
+  putStrLn $ show l
+  return l
 
 clockIn :: Log -> IO Log
 clockIn l = do
