@@ -41,6 +41,7 @@ clockOut l = do
   time <- getCurrentTime
   putStrLn ("Clocked out at " ++ show time)
   let cur = mostRecentEntry l
+      -- TODO: Isn't there a better way to do this (e.g. like Elm)?
       new = (Entry { startTime = (startTime cur)
                    , endTime = Just time
                    , description = (description cur) })
