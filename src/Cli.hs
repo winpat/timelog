@@ -25,7 +25,7 @@ handleArgument a l
 
 printLog :: Log -> IO Log
 printLog l = do
-  putStrLn $ show l
+  mapM (putStrLn . show) l
   return l
 
 clockIn :: Log -> IO Log
