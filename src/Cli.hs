@@ -2,7 +2,7 @@ module Cli where
 
 import Types
 
-import Data.List (sort)
+import Data.List (sort, intercalate)
 import Control.Monad (when)
 import qualified UI as UI(main)
 import System.Exit (die)
@@ -11,16 +11,16 @@ import Data.Time.Clock
 
 commandLine :: [String] -> Log -> IO Log
 commandLine args l = do
-  when ((length args) > 1) $ die "Invalid argument specified!"
-  let arg = head args
-  handleArgument arg l
+  let cmd = head args
+      arg = intercalate " " $ tail args
+  handleArgument cmd arg l
 
-handleArgument :: String -> Log -> IO Log
-handleArgument a l
-             | a == "ui"    = UI.main l
-             | a == "start" = clockIn l
-             | a == "stop"  = clockOut l
-             | a == "list"  = printLog l
+handleArgument :: String -> String -> Log -> IO Log
+handleArgument cmd arg l
+             | cmd == "ui"    = UI.main l
+             | cmd == "start" = clockIn l
+             | cmd == "stop"  = clockOut arg l
+             | cmd == "list"  = printLog l
              | otherwise    = undefined
 
 printLog :: Log -> IO Log
@@ -35,22 +35,20 @@ clockIn l = do
   putStrLn ("Clocked in at " ++ show time)
   return $ Entry { startTime = Just time
                  , endTime = Nothing
-                 , description = "Work work work" } : l
+                 , description = "To be specified." } : l
 
-clockOut :: Log -> IO Log
-clockOut l = do
+clockOut :: String -> Log -> IO Log
+clockOut desc l = do
   time <- getCurrentTime
   let cur = mostRecentEntry l
   when (entryCompleted cur) $ die "The entry has already been completed! Start a new one."
-  let new = updateEndTime cur time
+  when (desc == "") $ die "No description specified!"
+  let new = Entry (startTime cur) (Just time) desc
   putStrLn ("Clocked out at " ++ show time)
   return $ replaceEntry l cur new
 
 entryCompleted :: Entry -> Bool
 entryCompleted e = (endTime e) /= Nothing
-
-updateEndTime :: Entry -> UTCTime -> Entry
-updateEndTime e t = e { endTime = Just t }
 
 replaceEntry :: Log -> Entry -> Entry -> Log
 replaceEntry [] o n = []
