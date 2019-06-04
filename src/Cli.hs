@@ -21,7 +21,7 @@ handleArgument cmd arg l
              | cmd == "start" = clockIn l
              | cmd == "stop"  = clockOut arg l
              | cmd == "list"  = printLog l
-             | otherwise    = undefined
+             | otherwise      = printLog l
 
 printLog :: Log -> IO Log
 printLog l = do
