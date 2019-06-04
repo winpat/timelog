@@ -30,5 +30,10 @@ renderDateDiff :: Maybe UTCTime -> Maybe UTCTime -> String
 renderDateDiff Nothing _ = ""
 renderDateDiff _ Nothing = ""
 renderDateDiff (Just start) (Just end) =
-        let format = "%H:%M:%s"
+        let format = "%H:%M:%S"
         in formatTime defaultTimeLocale format . posixSecondsToUTCTime $ diffUTCTime end start
+
+renderTime :: UTCTime -> String
+renderTime date =
+        let format = "%H:%M:%S"
+        in formatTime defaultTimeLocale format date

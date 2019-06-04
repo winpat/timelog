@@ -3,7 +3,7 @@ module Storage.Serialize (load, save) where
 import System.Environment (lookupEnv)
 import Types
 
-filename = "labda-time.dat"
+filename = "lambda-time.dat"
 
 
 dataFile :: IO String

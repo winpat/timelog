@@ -32,7 +32,7 @@ clockIn :: Log -> IO Log
 clockIn l = do
   time <- getCurrentTime
   when (not . entryCompleted . mostRecentEntry $ l) $ die "There is still an active entry. Stop it first!"
-  putStrLn ("Clocked in at " ++ show time)
+  putStrLn ("Clocked in at " ++ Types.renderTime time)
   return $ Entry { startTime = Just time
                  , endTime = Nothing
                  , description = "To be specified." } : l
@@ -44,7 +44,7 @@ clockOut desc l = do
   when (entryCompleted cur) $ die "The entry has already been completed! Start a new one."
   when (desc == "") $ die "No description specified!"
   let new = Entry (startTime cur) (Just time) desc
-  putStrLn ("Clocked out at " ++ show time)
+  putStrLn ("Clocked out at " ++ Types.renderTime time)
   return $ replaceEntry l cur new
 
 entryCompleted :: Entry -> Bool
