@@ -33,6 +33,10 @@ import Brick.Widgets.Core
   )
 import Brick.Util (fg, on)
 
+
+--
+-- UI
+--
 drawUI :: L.List () LT.Entry -> [Widget ()]
 drawUI l = [ui]
     where
@@ -49,10 +53,27 @@ drawUI l = [ui]
                               , C.hCenter $ str "Press Esc to exit."
                               ]
 
+
+listDrawElement :: Bool -> LT.Entry -> Widget ()
+listDrawElement sel entry = Core.hBox
+    [ Core.padLeft (T.Pad 1) $ str $ LT.renderDate ( LT.startTime entry)
+    , Core.padLeft (T.Pad 3) $ str $ LT.renderDateDiff ( LT.startTime entry) ( LT.endTime entry)
+    , Core.padLeft (T.Pad 3) $ str ( LT.description entry)
+    ]
+
+
+--
+-- Events
+--
 appEvent :: L.List () LT.Entry -> T.BrickEvent () e -> T.EventM () (T.Next (L.List () LT.Entry))
 appEvent l (T.VtyEvent e) =
     case e of        
         V.EvKey (V.KChar 'd') [] ->
+          case l^.(L.listSelectedL) of
+              Nothing -> M.continue l
+              Just i -> M.continue $ L.listRemove i l
+
+        V.EvKey (V.KChar 'm') [] ->
           case l^.(L.listSelectedL) of
               Nothing -> M.continue l
               Just i -> M.continue $ L.listRemove i l
@@ -62,16 +83,10 @@ appEvent l (T.VtyEvent e) =
         ev -> M.continue =<< L.handleListEvent ev l
 appEvent l _ = M.continue l
 
-listDrawElement :: Bool -> LT.Entry -> Widget ()
-listDrawElement sel entry = Core.hBox
-    [ Core.padLeft (T.Pad 1) $ str $ LT.renderDate ( LT.startTime entry)
-    , Core.padLeft (T.Pad 3) $ str $ LT.renderDateDiff ( LT.startTime entry) ( LT.endTime entry)
-    , Core.padLeft (T.Pad 3) $ str ( LT.description entry)
-    ]
 
-initialState :: LT.Log -> L.List () LT.Entry
-initialState l = L.list () (Vec.fromList l) 1
-
+--
+-- Custom Style
+--
 customAttr :: A.AttrName
 customAttr = L.listSelectedAttr <> "custom"
 
@@ -91,6 +106,16 @@ theApp =
           , M.appAttrMap = const theMap
           }
 
+--
+-- State
+--
+initialState :: LT.Log -> L.List () LT.Entry
+initialState l = L.list () (Vec.fromList l) 1
+
+
+--
+-- Main
+--
 main :: LT.Log -> IO LT.Log
 main log = do
   newData <- M.defaultMain theApp (initialState log)
