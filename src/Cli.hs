@@ -40,18 +40,23 @@ clockIn l = do
 clockOut :: Log -> IO Log
 clockOut l = do
   time <- getCurrentTime
-  putStrLn ("Clocked out at " ++ show time)
   let cur = mostRecentEntry l
-      -- TODO: Isn't there a better way to do this (e.g. like Elm)?
-      new = (Entry { startTime = (startTime cur)
-                   , endTime = Just time
-                   , description = (description cur) })
+  when (entryCompleted cur) $ die "The entry has already been completed! Start a new one."
+  let new = updateEndTime cur time
+  putStrLn ("Clocked out at " ++ show time)
   return $ replaceEntry l cur new
 
+entryCompleted :: Entry -> Bool
+entryCompleted e = (endTime e) /= Nothing
+
+updateEndTime :: Entry -> UTCTime -> Entry
+updateEndTime e t = e { endTime = Just t }
+
 replaceEntry :: Log -> Entry -> Entry -> Log
-replaceEntry (l:ls) o n
-    | l == o    = n : replaceEntry ls o n
-    | otherwise = l : replaceEntry ls o n
+replaceEntry [] o n = []
+replaceEntry (x:xs) o n
+    | x == o    = n : replaceEntry xs o n
+    | otherwise = x : replaceEntry xs o n
 
 mostRecentEntry :: Log -> Entry
-mostRecentEntry l = head $ sort l
+mostRecentEntry l = head $ reverse $ sort l
