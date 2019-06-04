@@ -31,6 +31,7 @@ printLog l = do
 clockIn :: Log -> IO Log
 clockIn l = do
   time <- getCurrentTime
+  when (not . entryCompleted . mostRecentEntry $ l) $ die "There is still an active entry. Stop it first!"
   putStrLn ("Clocked in at " ++ show time)
   return $ Entry { startTime = Just time
                  , endTime = Nothing
