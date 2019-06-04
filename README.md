@@ -34,6 +34,6 @@ logs. If you want to have global log, you can export the path to your logfile th
 
 To make it easy to work on this project on any machine, without having to install the Haskell environment, we use a Docker image that has all required dependencies installed. You can start the container using the following command:
 
-```
+```sh
 docker-compose run haskell /bin/bash
 ```
