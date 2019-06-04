@@ -3,7 +3,6 @@
 module UI (main) where
 
 import qualified Types as LT
-import qualified UIEditForm as UIEditForm(main)
 
 import Lens.Micro ((^.))
 import Control.Monad (void)
