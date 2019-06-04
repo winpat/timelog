@@ -22,6 +22,7 @@ The `ui` command will open an interactive GUI (built with  [brick](https://githu
 ```sh
 $ timelog ui
 ```
+![Screenshot](screenhot.png)
 
 # Configuration
 
