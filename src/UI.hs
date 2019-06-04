@@ -3,6 +3,7 @@
 module UI (main) where
 
 import qualified Types as LT
+import qualified UIEditForm as UIEditForm(main)
 
 import Lens.Micro ((^.))
 import Control.Monad (void)
@@ -49,7 +50,9 @@ drawUI l = [ui]
               L.renderList listDrawElement True l
         ui = C.vCenter $ vBox [ C.hCenter box
                               , str " "
-                              , C.hCenter $ str "Press d to delete an entry. Press m to modify"
+                              , C.hCenter $ str "To ensure the list is immutable, you can not edit the entries."
+                              , C.hCenter $ str "Due to popular demand, however, we implemented a delete option."
+                              , C.hCenter $ str "Press d to delete an entry."
                               , C.hCenter $ str "Press Esc to exit."
                               ]
 
@@ -73,10 +76,8 @@ appEvent l (T.VtyEvent e) =
               Nothing -> M.continue l
               Just i -> M.continue $ L.listRemove i l
 
-        V.EvKey (V.KChar 'm') [] ->
-          case l^.(L.listSelectedL) of
-              Nothing -> M.continue l
-              Just i -> M.continue $ L.listRemove i l
+        -- this is where the edit event would be handled.
+        -- somehow it isn't though
         
         V.EvKey V.KEsc [] -> M.halt l
 
