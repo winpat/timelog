@@ -6,7 +6,7 @@ import Data.List (sort, intercalate)
 import Control.Monad (when)
 import qualified UI as UI(main)
 import System.Exit (die)
-
+import Data.Time.Format
 import Data.Time.Clock
 
 commandLine :: [String] -> Log -> IO Log
@@ -25,8 +25,14 @@ handleArgument cmd arg l
 
 printLog :: Log -> IO Log
 printLog l = do
-  mapM (putStrLn . show) l
+  mapM (putStrLn . renderEntry) l
   return l
+
+renderEntry :: Entry -> String
+renderEntry (Entry s e d) = renderDatetime s ++ " - " ++ renderDatetime e ++ ": " ++ d
+  where renderDatetime = \x -> case x of
+          Nothing -> "In Progress"
+          Just d  -> formatTime defaultTimeLocale "%d. %b %H:%M:%S" d
 
 clockIn :: Log -> IO Log
 clockIn l = do
